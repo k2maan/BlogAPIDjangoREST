@@ -8,6 +8,16 @@ from django.http import Http404
 from django.contrib.auth.models import User
 from posts.serializers import UserSerializer
 from posts.permissions import IsOwnerOrReadOnly
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('user-list', request=request, format=format),
+        'posts': reverse('post-list', request=request, format=format),
+    })
 
 
 class UserList(generics.ListAPIView):
